@@ -11,15 +11,21 @@ const newsRoutes = require('./routes/news');
 const messageRoutes = require('./routes/messages');
 const analyticsRoutes = require('./routes/analytics');
 
+const allowedOrigins = [
+  'https://saveheal.netlify.app',
+  'http://localhost:5173',
+  'http://localhost:5174',
+];
+
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: '*', methods: ['GET', 'POST'] },
+  cors: { origin: allowedOrigins, methods: ['GET', 'POST'] },
 });
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 // Передаём io в routes через app

@@ -18,6 +18,7 @@ model User {
   orders           Order[]
   sentMessages     Message[] @relation("SentMessages")
   receivedMessages Message[] @relation("ReceivedMessages")
+  reviews          Review[]
   createdAt        DateTime  @default(now())
 }
 
@@ -90,4 +91,23 @@ model Message {
   text       String
   isComplain Boolean  @default(false)
   createdAt  DateTime @default(now())
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  productId Int
+  rating    Int
+  text      String
+  createdAt DateTime @default(now())
+}
+
+model PromoCode {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  discount  Int      // процент скидки
+  active    Boolean  @default(true)
+  expiresAt DateTime?
+  createdAt DateTime @default(now())
 }

@@ -10,6 +10,8 @@ const orderRoutes = require('./routes/orders');
 const newsRoutes = require('./routes/news');
 const messageRoutes = require('./routes/messages');
 const analyticsRoutes = require('./routes/analytics');
+const reviewRoutes = require('./routes/reviews');
+const promoRoutes = require('./routes/promo');
 
 const allowedOrigins = [
   'https://saveheal.netlify.app',
@@ -38,6 +40,8 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/promo', promoRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

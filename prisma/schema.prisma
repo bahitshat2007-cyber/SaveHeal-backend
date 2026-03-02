@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int       @id @default(autoincrement())
+  phone            String?   @unique
+  email            String?   @unique
+  googleId         String?   @unique
+  name             String?
+  password         String?
+  role             Role      @default(USER)
+  orders           Order[]
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  createdAt        DateTime  @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  price       Int
+  weight      String
+  description String
+  ingredients String
+  proteins    Float
+  fats        Float
+  carbs       Float
+  calories    Float
+  images      String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Order {
+  id            Int         @id @default(autoincrement())
+  userId        Int
+  user          User        @relation(fields: [userId], references: [id])
+  totalAmount   Int
+  status        OrderStatus @default(PENDING)
+  paymentMethod PaymentType @default(KASPI)
+  items         Json
+  deliveryName  String
+  deliveryPhone String
+  deliveryCity  String
+  deliveryAddr  String
+  comment       String?
+  deliveryDate  String?
+  cancelReason  String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentType {
+  KASPI
+  CASH_ON_DELIVERY
+}
+
+model News {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String
+  highlightText String?
+  createdAt     DateTime @default(now())
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiverId Int?
+  receiver   User?    @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  text       String
+  isComplain Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}

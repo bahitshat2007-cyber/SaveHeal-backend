@@ -44,6 +44,17 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'SaveHeal API is running' });
 });
 
+// Временный дебаг — проверяем переменные (удалить после настройки)
+app.get('/api/debug', (req, res) => {
+  res.json({
+    DATABASE_URL: !!process.env.DATABASE_URL,
+    JWT_SECRET: !!process.env.JWT_SECRET,
+    GOOGLE_CLIENT_ID: !!process.env.GOOGLE_CLIENT_ID,
+    CLOUDINARY_CLOUD_NAME: !!process.env.CLOUDINARY_CLOUD_NAME,
+    PORT: process.env.PORT,
+  });
+});
+
 // Socket.io — реальный чат
 io.on('connection', (socket) => {
   // Клиент присоединяется к своей комнате (userId)

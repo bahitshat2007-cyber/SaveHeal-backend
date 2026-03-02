@@ -4,7 +4,7 @@
   "description": "SaveHeal Foods Backend API",
   "main": "src/index.js",
   "scripts": {
-    "build": "npx prisma generate && npx prisma db push",
+    "build": "npx prisma generate",
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
     "db:push": "npx prisma db push",

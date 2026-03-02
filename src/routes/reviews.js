@@ -27,13 +27,13 @@ router.post('/:productId', authMiddleware, async (req, res) => {
 
     // Проверяем что юзер ещё не оставлял отзыв
     const existing = await prisma.review.findFirst({
-      where: { userId: req.user.userId, productId: parseInt(req.params.productId) },
+      where: { userId: req.userId, productId: parseInt(req.params.productId) },
     });
     if (existing) return res.status(400).json({ error: 'Вы уже оставляли отзыв на этот товар' });
 
     const review = await prisma.review.create({
       data: {
-        userId: req.user.userId,
+        userId: req.userId,
         productId: parseInt(req.params.productId),
         rating: parseInt(rating),
         text,
